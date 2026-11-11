@@ -1,0 +1,15 @@
+name: Static checks
+on:
+  push:
+  pull_request:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check shell scripts and compile Python
+        run: |
+          bash -n install.sh uninstall.sh
+          python3 -m py_compile quota_pill.py
+      - name: Run non-GUI parser tests
+        run: python3 -m unittest discover -s tests -v
